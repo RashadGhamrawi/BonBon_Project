@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareBonus</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f3f4f6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 100px;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 16px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .main-content {
+            width: 90%;
+            max-width: 500px;
+            margin-top: 80px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .cool-blue {
+            color: #2563eb;
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        .floating-button {
+            position: fixed;
+            right: 20px;
+            bottom: 100px;
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #2563eb, #4f46e5);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+
+        .floating-button:hover {
+            transform: scale(1.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .modal-content input, .modal-content select, .modal-content textarea, .modal-content button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .history {
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+
+        .history-item {
+            padding: 10px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .ranking-page, .prizes-page {
+            display: none;
+            margin-top: 100px;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .ranking-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .ranking-item:last-child {
+            border-bottom: none;
+        }
+
+        .prizes-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .prize-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .prize-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            animation: fadeOut 2s ease-out;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* Styling for Tabs */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .tab-button {
+            padding: 12px 20px;
+            background-color: #2563eb;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .tab-button:hover {
+            background-color: #4f46e5;
+        }
+
+        .tab-button.active {
+            background-color: #4f46e5;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">CareBonus</header>
+
+    <main class="main-content">
+        <div class="card cool-blue" id="pointsDisplay">あなたの取得ポイント: 2,500 pt</div>
+        <div class="card cool-blue">今月の送付可能ポイント: <span id="monthlyLimit">450</span>  </div>
+
+        <div class="history" id="historySection">
+            <h3>履歴</h3>
+            <div id="historyList"></div>
+        </div>
+    </main>
+
+    <button class="floating-button" onclick="openModal()">+</button>
+
+    <div id="sendPointsModal" class="modal">
+        <div class="modal-content">
+            <h2>ポイントを送る</h2>
+            <select id="recipient" onchange="updateNames()">
+                <option value="医者">医者</option>
+                <option value="看護師">看護師</option>
+                <option value="スタッフ">スタッフ</option>
+            </select>
+            <select id="person" disabled></select>
+            <input type="number" id="points" max="50" min="1" value="10">
+            <div id="pointsLeft" style="margin-top: 10px;">残りポイント: 450</div>
+            <textarea id="message" placeholder="感謝のメッセージ"></textarea>
+            <button onclick="sendPoints()">送信</button>
+        </div>
+    </div>
+
+    <div id="fireworks" class="fireworks">🎉 🎉✨✨✨</div>
+
+    <!-- Tabs for navigation -->
+    <div class="tabs">
+        <button class="tab-button active" onclick="showPage('ranking')">ランキング</button>
+        <button class="tab-button" onclick="showPage('prizes')">商品交換</button>
+    </div>
+
+    <!-- Ranking Page -->
+    <div id="rankingPage" class="ranking-page">
+        <h3>病院ランキング</h3>
+        <div class="ranking-item"><span>1位</span><span>田中 太郎 - 1200 pt</span></div>
+        <div class="ranking-item"><span>2位</span><span>佐藤 健 - 1150 pt</span></div>
+        <div class="ranking-item"><span>3位</span><span>鈴木 光 - 1100 pt</span></div>
+        <div class="ranking-item"><span>4位</span><span>山田 花子 - 1000 pt</span></div>
+        <div class="ranking-item"><span>5位</span><span>高橋 美穂 - 950 pt</span></div>
+        <div class="ranking-item"><span>6位</span><span>渡辺 裕子 - 900 pt</span></div>
+        <div class="ranking-item"><span>7位</span><span>井上 翼 - 850 pt</span></div>
+        <div class="ranking-item"><span>8位</span><span>中村 一樹 - 800 pt</span></div>
+        <div class="ranking-item"><span>9位</span><span>加藤 正直 - 750 pt</span></div>
+        <div class="ranking-item"><span>10位</span><span>吉田 幸 - 700 pt</span></div>
+    </div>
+
+    <!-- Prizes Page -->
+    <div id="prizesPage" class="prizes-page">
+        <h3>交換可能商品</h3>
+        <div class="prizes-list">
+            <div class="prize-card">
+                <h4>Amazonギフトカード</h4>
+                <p>ポイント: 500 pt</p>
+            </div>
+            <div class="prize-card">
+                <h4>プラスチックボトル</h4>
+                <p>ポイント: 150 pt</p>
+            </div>
+            <div class="prize-card">
+                <h4>ヘッドフォン</h4>
+                <p>ポイント: 1000 pt</p>
+            </div>
+            <div class="prize-card">
+                <h4>ショッピングチケット</h4>
+                <p>ポイント: 300 pt</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let history = [];
+
+        function openModal() {
+            document.getElementById('sendPointsModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('sendPointsModal').style.display = 'none';
+        }
+
+        function sendPoints() {
+            let recipient = document.getElementById('recipient').value;
+            let person = document.getElementById('person').value;
+            let points = document.getElementById('points').value;
+            let message = document.getElementById('message').value;
+
+            // Update points balance
+            let remainingPoints = document.getElementById('monthlyLimit');
+            remainingPoints.textContent = (parseInt(remainingPoints.textContent) - points) + " pt";
+
+            // Add to history
+            history.push({
+                recipient,
+                person,
+                points,
+                message,
+                date: new Date().toLocaleString(),
+            });
+
+            // Update the history section
+            updateHistory();
+
+            // Show fireworks
+            document.getElementById('fireworks').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('fireworks').style.display = 'none';
+            }, 2000);
+
+            // Close modal
+            closeModal();
+        }
+
+        function updateNames() {
+            let personSelect = document.getElementById('person');
+            personSelect.innerHTML = '';
+            let title = document.getElementById('recipient').value;
+            let names = [];
+
+            if (title === '医者') {
+                names = ['田中 太郎', '佐藤 健', '鈴木 光'];
+            } else if (title === '看護師') {
+                names = ['山田 花子', '高橋 美穂', '渡辺 裕子'];
+            } else if (title === 'スタッフ') {
+                names = ['井上 翼', '中村 一樹', '加藤 正直'];
+            }
+
+            // Enable the select element once we have names
+            personSelect.disabled = false;
+
+            names.forEach(name => {
+                let option = document.createElement('option');
+                option.value = name;
+                option.textContent = name;
+                personSelect.appendChild(option);
+            });
+        }
+
+        function updateHistory() {
+            let historyList = document.getElementById('historyList');
+            historyList.innerHTML = '';
+
+            history.forEach(item => {
+                let div = document.createElement('div');
+                div.classList.add('history-item');
+                div.innerHTML = `
+                    <p><strong>${item.recipient} - ${item.person}</strong></p>
+                    <p>ポイント: ${item.points} pt</p>
+                    <p>メッセージ: ${item.message}</p>
+                    <p>送信日時: ${item.date}</p>
+                `;
+                historyList.appendChild(div);
+            });
+        }
+
+        function showPage(page) {
+            if (page === 'ranking') {
+                document.getElementById('rankingPage').style.display = 'block';
+                document.getElementById('prizesPage').style.display = 'none';
+            } else if (page === 'prizes') {
+                document.getElementById('rankingPage').style.display = 'none';
+                document.getElementById('prizesPage').style.display = 'block';
+            }
+            updateActiveTab(page);
+        }
+
+        function updateActiveTab(page) {
+            let tabs = document.querySelectorAll('.tab-button');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            if (page === 'ranking') {
+                tabs[0].classList.add('active');
+            } else if (page === 'prizes') {
+                tabs[1].classList.add('active');
+            }
+        }
+
+        // Initialize default page
+        showPage('ranking');
+    </script>
+</body>
+</html>
