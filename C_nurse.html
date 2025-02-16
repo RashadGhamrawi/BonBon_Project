@@ -3,336 +3,457 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>看護師募集【即日面接可】- △△病院 | GUPPY</title>
+    <title>看護師募集 - 医療法人社団○○会 △△病院</title>
     <style>
+        /* 求人サイト-Ａ-スタイルのベーススタイルを継承 */
         :root {
-            --primary-color: #FF4081;
+            --primary-color: #2D50A7;
             --secondary-color: #F8F9FA;
-            --accent-color: #00BCD4;
+            --accent-color: #FF4B00;
             --text-color: #333333;
-            --border-color: #EEEEEE;
+            --border-color: #E1E7EC;
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Hiragino Sans', sans-serif;
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 0;
             color: var(--text-color);
-            background-color: var(--secondary-color);
-            padding-bottom: 80px;
+            background-color: #F5F6F8;
         }
 
         .header {
-            background: white;
-            padding: 0.8rem;
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .quick-actions {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            padding: 1rem;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            display: flex;
-            gap: 1rem;
-            z-index: 1000;
-        }
-
-        .quick-button {
-            flex: 1;
-            padding: 1rem;
-            border-radius: 8px;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .apply-now {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        .chat-now {
-            background: var(--accent-color);
-            color: white;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 1rem;
         }
 
-        .status-tags {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            margin: 1rem 0;
-        }
-
-        .tag {
+        .job-header {
             background: white;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            border: 1px solid var(--border-color);
-        }
-
-        .tag.urgent {
-            background: #FFE0E0;
-            color: #D32F2F;
-            border-color: #D32F2F;
-        }
-
-        .job-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
+            padding: 2rem;
+            border-radius: 8px;
             margin-bottom: 1rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .notification {
-            background: #FFF3E0;
-            padding: 0.8rem;
+        .detail-section {
+            background: white;
+            padding: 2rem;
             border-radius: 8px;
-            margin: 1rem 0;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .update-time {
-            font-size: 0.8rem;
-            color: #666;
-            margin-top: 0.5rem;
-        }
-
-        .facility-images {
-            display: flex;
-            gap: 0.5rem;
-            overflow-x: auto;
-            padding: 0.5rem 0;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-
-        .facility-images::-webkit-scrollbar {
-            display: none;
-        }
-
-        .facility-image {
-            flex: 0 0 280px;
-            height: 200px;
+        /* 職場環境スコア用の追加スタイル */
+        .score-section {
+            background: white;
+            padding: 2rem;
             border-radius: 8px;
-            object-fit: cover;
+            margin: 2rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .info-list {
-            list-style: none;
-            padding: 0;
-            margin: 1rem 0;
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
         }
 
-        .info-list li {
-            padding: 1rem;
-            border-bottom: 1px solid var(--border-color);
+        .score-card {
+            background: var(--secondary-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .score-header {
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
         }
 
-        .info-list li:last-child {
-            border-bottom: none;
+        .score-value {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
         }
 
         .highlight-box {
-            background: #E3F2FD;
-            padding: 1rem;
+            background: #FFF7F5;
+            border: 2px solid var(--accent-color);
+            padding: 1.5rem;
             border-radius: 8px;
             margin: 1rem 0;
         }
 
-        .shift-schedule {
-            background: white;
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-        }
-
-        .shift-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1rem 0;
-        }
-
-        .shift-table th,
-        .shift-table td {
-            padding: 0.8rem;
-            border: 1px solid var(--border-color);
-            text-align: left;
-        }
-
-        .review-box {
-            background: white;
-            padding: 1rem;
-            border-radius: 8px;
-            margin: 1rem 0;
-            border: 1px solid var(--border-color);
-        }
-
-        .review-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .reviewer-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 20px;
-            background: var(--secondary-color);
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 0.5rem;
-            }
-            
-            .job-card {
-                border-radius: 0;
-                margin: 0 -0.5rem 1rem;
-            }
-        }
+        /* その他の既存スタイル継承 */
     </style>
 </head>
 <body>
+    <!-- ヘッダー部分は既存と同様 -->
     <header class="header">
-
+        <div class="container">
+            <img src="/api/placeholder/120/40" alt="求人サイト-Ｃ-医療の求人・転職情報" />
+        </div>
     </header>
 
     <main class="container">
-        <div class="notification">
-            <span>⚡</span>
-            <span>今日の面接予約可能！オンライン面接にも対応</span>
-        </div>
-
-        <div class="status-tags">
-            <span class="tag urgent">即日面接可</span>
-            <span class="tag">7:1看護体制</span>
-            <span class="tag">年間休日125日</span>
-            <span class="tag">24h保育所あり</span>
-        </div>
-
-        <article class="job-card">
-            <h1>看護師募集【好条件】夜勤手当30円/回</h1>
-            <p class="update-time">更新日時：2025年2月11日 11:45</p>
-
-            <div class="facility-images">
-
+        <article class="job-header">
+            <h1>【看護師】年間休日125日以上/プリセプター制度あり/最新設備の総合病院</h1>
+            
+            <div class="tag-list">
+                <span class="tag">正看護師</span>
+                <span class="tag">病棟</span>
+                <span class="tag">夜勤手当充実</span>
+                <span class="tag">年間休日125日</span>
+                <span class="tag">福利厚生充実</span>
             </div>
 
-            <div class="highlight-box">
-                <h3>おすすめポイント</h3>
-                <ul>
-                    <li>都心の大型総合病院で安定勤務</li>
-                    <li>充実した教育制度と手厚いサポート</li>
-                    <li>残業少なめでワークライフバランス◎</li>
+            <div class="point-box" style="background: #FFF7F5; border: 2px solid #FF4B00; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                <h2 style="color: #FF4B00; font-weight: bold; margin-bottom: 1rem;">求人のポイント</h2>
+                <ul style="margin: 0; padding-left: 1.5rem;">
+                    <li>充実した教育研修制度（プリセプター制度、専門・認定看護師資格取得支援）</li>
+                    <li>最新の医療機器・電子カルテシステム完備</li>
+                    <li>24時間保育所完備で子育て中の方も安心</li>
+                    <li>手当が充実（夜勤手当25,000円/回、その他各種手当）</li>
                 </ul>
             </div>
 
-            <ul class="info-list">
-                <li>
-                    <span>給与</span>
-                    <span>月給3万円〜4万円</span>
-                </li>
-                <li>
-                    <span>夜勤手当</span>
-                    <span>30円/回</span>
-                </li>
-                <li>
-                    <span>勤務時間</span>
-                    <span>日勤4:30-23:00</span>
-                </li>
-                <li>
-                    <span>最寄駅</span>
-                    <span>ボンボン駅徒歩169分</span>
-                </li>
-            </ul>
+            <div style="display: flex; justify-content: space-between; gap: 1rem; margin: 1rem 0;">
+                <div style="flex: 1; background: #F8F9FA; padding: 1.5rem; border-radius: 8px; border: 1px solid #DEE2E6;">
+                    <div style="color: #666; font-size: 0.9rem;">初年度年収</div>
+                    <div style="font-size: 1.2rem; font-weight: bold; color: #2D50A7; margin-top: 0.5rem;">450万円〜550万円</div>
+                </div>
+                <div style="flex: 1; background: #F8F9FA; padding: 1.5rem; border-radius: 8px; border: 1px solid #DEE2E6;">
+                    <div style="color: #666; font-size: 0.9rem;">勤務地</div>
+                    <div style="font-size: 1.2rem; font-weight: bold; color: #2D50A7; margin-top: 0.5rem;">東京都○○区</div>
+                </div>
+                <div style="flex: 1; background: #F8F9FA; padding: 1.5rem; border-radius: 8px; border: 1px solid #DEE2E6;">
+                    <div style="color: #666; font-size: 0.9rem;">最寄駅</div>
+                    <div style="font-size: 1.2rem; font-weight: bold; color: #2D50A7; margin-top: 0.5rem;">○○駅 徒歩5分</div>
+                </div>
+            </div>
         </article>
 
-        <div class="job-card">
-            <h2>シフトスケジュール</h2>
-            <div class="shift-schedule">
-                <table class="shift-table">
-                    <tr>
-                        <th>日勤</th>
-                        <td>4:30-23:00</td>
-                    </tr>
-                    <tr>
-                        <th>夜勤</th>
-                        <td>17:30-13:00</td>
-                    </tr>
-                    <tr>
-                        <th>夜勤回数</th>
-                        <td>月19-20回（応相談）</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
+        <section class="detail-section">
+            <h2 class="section-title">募集内容</h2>
+            <table class="info-table" style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <th style="width: 25%; padding: 1rem; background: #F8F9FA; border: 1px solid #DEE2E6; font-weight: bold;">
+                        募集職種
+                    </th>
+                    <td style="padding: 1rem; border: 1px solid #DEE2E6;">
+                        正看護師
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 25%; padding: 1rem; background: #F8F9FA; border: 1px solid #DEE2E6; font-weight: bold;">
+                        雇用形態
+                    </th>
+                    <td style="padding: 1rem; border: 1px solid #DEE2E6;">
+                        正社員（試用期間3ヶ月）
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 25%; padding: 1rem; background: #F8F9FA; border: 1px solid #DEE2E6; font-weight: bold;">
+                        募集人数
+                    </th>
+                    <td style="padding: 1rem; border: 1px solid #DEE2E6;">
+                        3名
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 25%; padding: 1rem; background: #F8F9FA; border: 1px solid #DEE2E6; font-weight: bold;">
+                        配属先
+                    </th>
+                    <td style="padding: 1rem; border: 1px solid #DEE2E6;">
+                        一般病棟（内科、外科、整形外科）
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 25%; padding: 1rem; background: #F8F9FA; border: 1px solid #DEE2E6; font-weight: bold;">
+                        必要資格
+                    </th>
+                    <td style="padding: 1rem; border: 1px solid #DEE2E6;">
+                        ・看護師免許（必須）<br>
+                        ・臨床経験3年以上（新卒の方も相談可）
+                    </td>
+                </tr>
+            </table>
+        </section>
 
-        <div class="job-card">
-            <h2>先輩看護師の声</h2>
-            <div class="review-box">
-                <div class="review-header">
-                    <div class="reviewer-avatar"></div>
-                    <div>
-                        <h4>内科病棟 太子さん（3年目）</h4>
+        <!-- 職場環境スコアセクション -->
+        <section class="score-section">
+            <h2 class="section-title">職場環境スコア</h2>
+            <p>第三者機関による職場環境評価（2024年2月実施）</p>
+            
+            <div class="score-grid">
+                <div class="score-card">
+                    <div class="score-header">
+                        <h3>職務満足度</h3>
+                        <span class="score-value">4.3/5.0</span>
+                    </div>
+                    <p>チームで目標を共有し、日々の達成感が大きい。患者様からの信頼も厚く、やりがいを持って働ける環境です。</p>
+                </div>
+
+                <div class="score-card">
+                    <div class="score-header">
+                        <h3>自己成長</h3>
+                        <span class="score-value">4.1/5.0</span>
+                    </div>
+                    <p>専門分野の研修や定期勉強会が充実し、スキルアップしやすい。資格取得支援制度も整っています。</p>
+                </div>
+
+                <div class="score-card">
+                    <div class="score-header">
+                        <h3>チームワーク</h3>
+                        <span class="score-value">4.5/5.0</span>
+                    </div>
+                    <p>職種を超えた連携が円滑で、お互いを支え合う風土が根付いている。新人看護師へのサポートも手厚いです。</p>
+                </div>
+
+                <div class="score-card">
+                    <div class="score-header">
+                        <h3>ワークライフバランス</h3>
+                        <span class="score-value">4.0/5.0</span>
+                    </div>
+                    <p>オンオフを切り替えやすく、有給休暇の取得も推奨されている。育児との両立支援制度も充実しています。</p>
+                </div>
+
+                <div style="background: white; padding: 2rem; border-radius: 8px; margin: 2rem 0; text-align: center;">
+                    <h3 style="margin-bottom: 1rem;">職場環境スコア レーダーチャート</h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" style="width: 100%; max-width: 500px;">
+                        <!-- 背景の五角形（グリッド） -->
+                        <g fill="none" stroke="#E5E7EB" stroke-width="1">
+                            <!-- 5段階の五角形 -->
+                            <path d="M200 200 L200 80 L308 140 L308 260 L200 320 L92 260 L92 140 Z" stroke-opacity="0.2"/>
+                            <path d="M200 200 L200 110 L284 155 L284 245 L200 290 L116 245 L116 155 Z" stroke-opacity="0.2"/>
+                            <path d="M200 200 L200 140 L260 170 L260 230 L200 260 L140 230 L140 170 Z" stroke-opacity="0.2"/>
+                            <path d="M200 200 L200 170 L236 185 L236 215 L200 230 L164 215 L164 185 Z" stroke-opacity="0.2"/>
+                        </g>
+
+                        <!-- 軸線 -->
+                        <g stroke="#999" stroke-width="1">
+                            <line x1="200" y1="200" x2="200" y2="80"/>
+                            <line x1="200" y1="200" x2="308" y2="140"/>
+                            <line x1="200" y1="200" x2="308" y2="260"/>
+                            <line x1="200" y1="200" x2="200" y2="320"/>
+                            <line x1="200" y1="200" x2="92" y2="260"/>
+                            <line x1="200" y1="200" x2="92" y2="140"/>
+                        </g>
+
+                        <!-- スコアの領域 -->
+                        <path d="M200 104 
+                                 L290 152
+                                 L290 248
+                                 L200 296
+                                 L110 248
+                                 L110 152 Z" 
+                              fill="#2D50A7" 
+                              fill-opacity="0.6" 
+                              stroke="#2D50A7" 
+                              stroke-width="2"/>
+
+                        <!-- 軸ラベル -->
+                        <g font-family="Arial" font-size="14" fill="#333">
+                            <text x="190" y="70" text-anchor="middle">職務満足度(4.3)</text>
+                            <text x="320" y="135" text-anchor="start">自己成長(4.1)</text>
+                            <text x="320" y="275" text-anchor="start">チームワーク(4.5)</text>
+                            <text x="190" y="335" text-anchor="middle">WLB(4.0)</text>
+                            <text x="60" y="275" text-anchor="end">心理的安全性(4.2)</text>
+                        </g>
+
+                        <!-- スケール表示 -->
+                        <g font-family="Arial" font-size="12" fill="#666">
+                            <text x="205" y="170" text-anchor="start">3</text>
+                            <text x="205" y="140" text-anchor="start">4</text>
+                            <text x="205" y="110" text-anchor="start">5</text>
+                        </g>
+                    </svg>
+                    <p style="color: #666; font-size: 0.9rem; margin-top: 1rem;">※5段階評価（2024年2月時点）</p>
+                </div>
+
+                <div class="score-card">
+                    <div class="score-header">
+                        <h3>心理的安全性</h3>
+                        <span class="score-value">4.2/5.0</span>
+                    </div>
+                    <p>意見交換が活発で、ミスを共有して改善する姿勢が醸成されている。風通しの良い職場です。</p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h3>看護部長からのメッセージ</h3>
+                <p>「当院では、看護師一人一人が自分らしく輝ける職場づくりを心がけています。充実した研修制度と温かいチームワークで、あなたの成長をサポートします。ぜひ一緒に、患者様に寄り添う看護を実践していきましょう。」</p>
+            </div>
+        </section>
+
+        <section class="interview-section">
+            <h2 class="section-title">先輩看護師インタビュー</h2>
+            <div class="interview-content">
+                <img src="/api/placeholder/200/200" alt="インタビュー">
+                <div>
+                    <h3>外科病棟 主任看護師 山田さん（入職8年目）</h3>
+                    <p>「教育体制が充実しているので、新人の頃から安心して看護技術を習得できました。専門・認定看護師を目指す方へのサポートも手厚く、自身のキャリアアップに繋がる環境です。」</p>
+                    <div class="medical-note">
+                        <h4>主任看護師の役割</h4>
+                        <p>病棟の看護業務の管理・調整を行い、スタッフの教育・指導も担当します。</p>
                     </div>
                 </div>
-                <p>教育体制が完璧に整っているので、新人の頃から安心して…絶望の一歩を踏み出せました。プリセプターの先輩は鬼のような情熱で「丁寧に」指導してくださり、ミスをするとその場でリアルタイム反省会が始まります。分からないことがあっても、気軽に（心の中で震えながら）質問できる環境です。質問すればするほど、成長痛ならぬ精神痛を実感できるのも魅力のひとつです。</p>
             </div>
-        </div>
+        </section>
 
-        <div class="job-card">
-            <h2>最近の更新情報</h2>
-            <ul class="info-list">
-                <li>
-                    <span>2025年2月</span>
-                    <span>電子カルテシステム刷新</span>
-                </li>
-                <li>
-                    <span>2025年1月</span>
-                    <span>新人研修プログラム強化</span>
-                </li>
-                <li>
-                    <span>2024年12月</span>
-                    <span>職員寮リニューアル</span>
-                </li>
-            </ul>
-        </div>
-
-        <div class="job-card">
-            <h2>現在の応募状況</h2>
-            <div class="notification">
-                <span>📊</span>
-                <span>今週の応募者数：8名（うち面接確定3名）</span>
+        <section class="detail-section">
+            <h2 class="section-title">教育体制・キャリア支援</h2>
+            <div class="point-box">
+                <h3>充実の研修制度</h3>
+                <ul>
+                    <li>プリセプター制度による1年間のマンツーマン指導</li>
+                    <li>専門・認定看護師資格取得支援（費用補助あり）</li>
+                    <li>定期的な院内研修・勉強会の開催</li>
+                    <li>外部研修への参加支援</li>
+                </ul>
             </div>
-            <p>※応募から内定まで最短5日</p>
+        </section>
+
+        <section class="detail-section">
+            <h2 class="section-title">勤務条件</h2>
+            <table class="info-table" style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <th style="width: 25%; padding: 1rem; background: #F8F9FA; border: 1px solid #DEE2E6; font-weight: bold;">
+                        給与
+                    </th>
+                    <td style="padding: 1rem; border: 1px solid #DEE2E6;">
+                        月給32万円〜42万円<br>
+                        ※経験・能力を考慮して決定<br>
+                        ※諸手当（夜勤手当、通勤手当、住宅手当等）別途支給
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 25%; padding: 1rem; background: #F8F9FA; border: 1px solid #DEE2E6; font-weight: bold;">
+                        賞与
+                    </th>
+                    <td style="padding: 1rem; border: 1px solid #DEE2E6;">
+                        年2回（前年度実績：計4.5ヶ月分）
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 25%; padding: 1rem; background: #F8F9FA; border: 1px solid #DEE2E6; font-weight: bold;">
+                        勤務時間
+                    </th>
+                    <td style="padding: 1rem; border: 1px solid #DEE2E6;">
+                        【日勤】8:30〜17:00<br>
+                        【夜勤】16:30〜9:00<br>
+                        ※夜勤回数：月4〜5回程度<br>
+                        ※勤務シフトは希望を考慮
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 25%; padding: 1rem; background: #F8F9FA; border: 1px solid #DEE2E6; font-weight: bold;">
+                        休日・休暇
+                    </th>
+                    <td style="padding: 1rem; border: 1px solid #DEE2E6;">
+                        ・年間休日125日<br>
+                        ・完全週休2日制（シフト制）<br>
+                        ・年次有給休暇（入職時10日、最大20日）<br>
+                        ・夏季休暇（3日）<br>
+                        ・年末年始休暇（5日）<br>
+                        ・その他特別休暇（慶弔等）
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 25%; padding: 1rem; background: #F8F9FA; border: 1px solid #DEE2E6; font-weight: bold;">
+                        福利厚生
+                    </th>
+                    <td style="padding: 1rem; border: 1px solid #DEE2E6;">
+                        ・各種社会保険完備<br>
+                        ・退職金制度（勤続3年以上）<br>
+                        ・24時間院内保育所完備<br>
+                        ・職員寮あり（月額20,000円〜）<br>
+                        ・専門医資格取得支援制度<br>
+                        ・職員食堂（補助あり）<br>
+                        ・医療費補助制度<br>
+                        ・制服貸与
+                    </td>
+                </tr>
+            </table>
+        </section>
+
+        <section class="detail-section">
+            <h2 class="section-title">病院概要</h2>
+            <table class="info-table" style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <th style="width: 25%; padding: 1rem; background: #F8F9FA; border: 1px solid #DEE2E6; font-weight: bold;">
+                        病床数
+                    </th>
+                    <td style="padding: 1rem; border: 1px solid #DEE2E6;">
+                        400床
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 25%; padding: 1rem; background: #F8F9FA; border: 1px solid #DEE2E6; font-weight: bold;">
+                        診療科目
+                    </th>
+                    <td style="padding: 1rem; border: 1px solid #DEE2E6;">
+                        内科、外科、整形外科、小児科、産婦人科など20診療科
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 25%; padding: 1rem; background: #F8F9FA; border: 1px solid #DEE2E6; font-weight: bold;">
+                        看護体制
+                    </th>
+                    <td style="padding: 1rem; border: 1px solid #DEE2E6;">
+                        7:1看護体制
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 25%; padding: 1rem; background: #F8F9FA; border: 1px solid #DEE2E6; font-weight: bold;">
+                        看護師数
+                    </th>
+                    <td style="padding: 1rem; border: 1px solid #DEE2E6;">
+                        280名（2024年2月現在）
+                    </td>
+                </tr>
+            </table>
+
+            <div class="department-info">
+                <div class="department-card">
+                    <h3 style="color: #2D50A7; font-weight: bold; margin-bottom: 1rem;">看護部の特徴</h3>
+                    <ul style="margin: 0; padding-left: 1.5rem;">
+                        <li>チーム制による質の高い看護の提供</li>
+                        <li>新人教育に力を入れた育成体制</li>
+                        <li>ワークライフバランスを重視した勤務体制</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <div style="text-align: center; padding: 3rem 0; background: #F8F9FA; margin-top: 2rem; border-radius: 8px;">
+            <a href="#" style="display: inline-block; background: #FF9900; color: white; padding: 1rem 3rem; border-radius: 50px; text-decoration: none; font-weight: bold; transition: opacity 0.3s;">この求人に応募する</a>
+            <p style="color: #666; font-size: 0.9rem; margin-top: 1rem;">※応募から内定までの期間：約2〜3週間</p>
         </div>
     </main>
-
-    <div class="quick-actions">
-        <button class="quick-button apply-now">今すぐ応募</button>
-        <button class="quick-button chat-now">チャットで質問</button>
-    </div>
 </body>
 </html>
